@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#bookForm').submit(function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: '/addBookinfo',
+                data: $('#bookForm').serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        // Redirect to manageBook on successful insertion
+                        window.location.href = "{{ url_for('manageBook') }}";
+                    } else {
+                        // Show error message in a pop-up
+                        alert('Failed to insert: ' + response.error);
+                    }
+                },
+                error: function() {
+                    alert('Error occurred during the request.');
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

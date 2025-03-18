@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block style %}
+<style>
+	.form-inline label {
+		width: 150px;
+	}
+	.form-inline input, .form-inline select {
+		width: 300px !important;
+	}
+</style>
+{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header">
+				<h5 class="card-title mb-0">过滤条件</h5>
+			</div>
+			<div class="card-body">
+				<form>
+					<table class="table tbquery">
+						<tr>
+							<td>
+								<div class="input-group input-group-sm">
+									<span class="input-group-text">ISBN</span>
+									<input type="text" name="isbn" class="form-control" placeholder="">
+								</div>
+							</td>
+							<td>
+								<div class="input-group input-group-sm">
+									<span class="input-group-text">书籍名称</span>
+									<input type="text" name="title" class="form-control" placeholder="">
+								</div>
+							</td>
+							<td>
+								<div class="input-group input-group-sm">
+									<button class="btn btn-primary form-control" type="submit"><i
+											class="bi bi-search"></i> 查 询 </button>
+								</div>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header">
+				<h5 class="card-title mb-0 float-left">ISBN信息列表</h5>
+				{% if session.get('is_admin') == True %}
+				<a data-toggle="modal" data-target="#addbookinfo" class="btn-sm btn-primary float-right" href="" role="button"> 新增书籍记录
+				</a>
+				{% endif %}
+			</div>
+			<div class="card-body">
+				{% if query_result %}
+				<table class="table table-striped table-bordered table-inverse" cellpadding="0" cellspacing="0">
+					<thead class="thead-inverse">
+						<tr class="text-center">
+							<th>序号</th>
+                            <th>书名</th>
+							<th>ISBN</th>
+							<th>出版社</th>
+							<th>作者</th>
+							<th>类型</th>
+                            <th>价格</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						{% for record in query_result %}
+						<tr class="text-center">
+							<td>{{ loop.index }}</td>
+							<td>{{ record[0] }}</td>
+							<td>{{ record[1] }}</td>
+							<td>{{ record[2] }}</td>
+							<td>{{ record[3] }}</td>
+                            <td>{{ record[4] }}</td>
+							<td>{{ record[5] }}</td>
+							{% if session.get('is_admin') == True %}
+							<td>
+								<a class="btn-sm btn-primary" href="/editBookinfo/{{record[1]}}" role="button">编辑</a>
+								<a class="btn-sm btn-danger" href="/delBookinfo/{{record[1]}}" role="button"> 删除</a>
+							</td>
+							{% endif %}
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+
+				{% else %}
+				<p>暂无结果返回！</p>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="addbookinfo" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-title">
+				<h4 class="text-center" style="margin-top:20px"> 新增书籍记录</h4>
+			</div>
+			<div class="modal-body">
+				<form class="form-group" action="/addBookinfo" method="post">
+					<div class="form-group form-inline">
+						<label for="">ISBN</label>
+						<input class="form-control" name="isbn" type="text"  required>
+					</div>
+
+                    <div class="form-group form-inline">
+						<label for="">书名</label>
+						<input class="form-control" name="title" type="text"  required>
+					</div>
+
+					<div class="form-group form-inline">
+						<label for="">出版社</label>
+						<input class="form-control" name="publisher" type="text"  required>
+					</div>
+
+					<div class="form-group form-inline">
+						<label for="">作者</label>
+						<input class="form-control" name="author" type="text"  required>
+					</div>
+
+					<div class="form-group form-inline">
+						<label for="">书籍类型</label>
+						<input class="form-control" name="booktype" type="text"  required>
+					</div>
+
+                    <div class="form-group form-inline">
+						<label for="">价格</label>
+						<input class="form-control" name="price" type="text"  required>
+					</div>
+
+					<div class="text-center">
+						<button class="btn btn-primary" type="submit">提交</button>
+						<button class="btn btn-danger" data-dismiss="modal">取消</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#bookForm').submit(function(event) {
+            event.preventDefault();
+
+            $.ajax({
+                type: 'POST',
+                url: '/addBookinfo',
+                data: $('#bookForm').serialize(),
+                success: function(response) {
+                    if (response.success) {
+                        // Redirect to manageBook on successful insertion
+                        window.location.href = "{{ url_for('manageBook') }}";
+                    } else {
+                        // Show error message in a pop-up
+                        alert('Failed to insert: ' + response.error);
+                    }
+                },
+                error: function() {
+                    alert('Error occurred during the request.');
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,31 @@
+.sidebar-header{
+    font-size: 1.1rem !important;
+}
+
+.content {
+    padding: 2rem 2rem 1.5rem !important;
+}
+
+
+.tbquery, .table {
+    margin-bottom: 0 !important;
+}
+
+.tbquery td, .tbquery th {
+    padding: 0.75rem;
+    vertical-align: top;
+    border-top:none !important;
+    border-bottom-width: 0 !important;
+    font-size: .75rem;
+}
+
+.tbresult td, .tbresult th {
+    font-size: .75rem;
+    padding: 6px 2px !important;
+}
+
+
+.sidebar-link, a.sidebar-link {
+    font-size: 14px;
+}
+

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <style>
+        html {
+            height: 100%;
+        }
+        body {
+            color: #F8F8FF;
+            /* background: #999; */
+            background: url("/static/images/Nike.jpg");
+		    background-position: 100% 100%;
+            background-size: cover; 
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+
+        .login-box {
+            width: 450px;
+            margin: 220px auto 0 auto;
+            text-align: center;
+            padding: 30px;
+            /* background: url(images/mask.png); */
+            background: #3e8cb3cf;
+            border-radius: 10px;
+            border: solid 1px #ddd;
+            padding-bottom: 40px;
+        }
+
+        .login-box .name,
+        .login-box .password{
+            font-size: 16px;
+            text-shadow: 0 1px 2px rgb(0 0 0 / 10%);
+        }
+
+        input[type=text],
+        input[type=password],
+        select {
+            width: 270px;
+            height: 42px;
+            margin-top: 25px;
+            padding: 0px 15px;
+            border: 1px solid rgba(255, 255, 255, .15);
+            border-radius: 6px;
+            color: #fff;
+            letter-spacing: 2px;
+            font-size: 16px;
+            background: transparent;
+        }
+
+        button {
+            cursor: pointer;
+            width: 40%;
+            height: 36px;
+            padding: 0;
+            background: #76d8a7;
+            border: 1px solid #3e8cb3cf;
+            border-radius: 6px;
+            font-weight: 300;
+            color: #fff;
+            font-size: 20px;
+            margin-top: 20px;
+            /* letter-spacing: 15px; */
+            text-shadow: 0 1px 2px rgb(0 0 0 / 10%);
+        }
+
+        .slink{
+            color: white;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-box">
+        <h3>教材发放系统</h3>
+        <hr>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}" style="text-align: center;width: 100%; margin-bottom: 5px;">
+            <strong>{{ message }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <form method="post" action="/login">
+            <div class="name">
+                <label>用户名:</label>
+                <input type="text" name="username" id="username" placeholder="请输入用户名" required>
+            </div>
+            <div class="password">
+                <label>密 码：</label>
+                <input type="password" name="password" maxlength="16" id="password" placeholder="请输入密码" required>
+            </div>
+            <div class="password mt-3">
+                <label class="radio-inline"><input type="radio" name="is_admin" value="1" checked> 我是管理员 </label>
+                <label class="radio-inline pl-5"><input type="radio" name="is_admin"  value="0"> 我是学生 </label>
+            </div>
+
+            <div class="login">
+                <button type="submit" tabindex="5">登 录</button>
+                <br>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

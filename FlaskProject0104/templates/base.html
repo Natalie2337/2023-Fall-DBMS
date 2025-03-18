@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<!-- <link rel="preconnect" href="https://fonts.gstatic.com"> -->
+	<link rel="shortcut icon" href="/static/img/icons/icon-48x48.png" />
+
+	<!-- <link rel="canonical" href="https://demo-basic.adminkit.io/" /> -->
+
+	<title>教材发放系统</title>
+
+	<link href="/static/css/app.css" rel="stylesheet">
+	<link href="/static/css/custom.css" rel="stylesheet">
+	<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css"> -->
+	{% block style %}
+	{% endblock %}
+	<style>
+		.table td, .table th{
+			padding: 0.35rem !important;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="wrapper">
+		<nav id="sidebar" class="sidebar js-sidebar">
+			<div class="sidebar-content js-simplebar">
+				<a class="sidebar-brand" href="/">
+					<img src="/static/images/logo.jpg" class="avatar img-fluid rounded me-1" />
+					<span class="align-middle">教材发放系统</span>
+				</a>
+				<ul class="sidebar-nav">
+
+					<li class="sidebar-header">
+						查询信息
+					</li>
+
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="/">
+							<i class="bi bi-person-heart"></i><span class="align-middle">教材信息</span>
+						</a>
+					</li>
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="/instock">
+							<i class="bi bi-currency-yen"></i><span class="align-middle">入库记录</span>
+						</a>
+					</li>
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="/outstock">
+							<i class="bi bi-currency-yen"></i><span class="align-middle">出库记录</span>
+						</a>
+					</li>
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="/queryorder">
+							<i class="bi bi-currency-yen"></i><span class="align-middle">订购记录</span>
+						</a>
+					</li>
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="/remainView">
+							<i class="bi bi-currency-yen"></i><span class="align-middle">库存信息</span>
+						</a>
+					</li>
+					{% if session.get('is_admin') == True %}
+					<li class="sidebar-header">
+						管理操作
+					</li>
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="/manageBook">
+							<i class="bi bi-bell"></i><span class="align-middle">教材管理</span>
+						</a>
+					</li>
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="/addInStock">
+							<i class="bi bi-bell"></i><span class="align-middle">入库管理</span>
+						</a>
+					</li>
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="/addOutStock">
+							<i class="bi bi-currency-yen"></i><span class="align-middle">出库管理</span>
+						</a>
+					</li>
+					<li class="sidebar-item">
+						<a class="sidebar-link" href="/orderList">
+							<i class="bi bi-people"></i><span class="align-middle">订购管理</span>
+						</a>
+					</li>
+
+					{% endif %}
+{#					<li class="sidebar-header">#}
+{#						其他#}
+{#					</li>#}
+{#					<li class="sidebar-item">#}
+{#						<a class="sidebar-link" href="/info">#}
+{#							<i class="bi bi-info-circle"></i><span class="align-middle">使用说明</span>#}
+{#						</a>#}
+{#					</li>#}
+{#					<li class="sidebar-item">#}
+{#						<a class="sidebar-link" href="/about">#}
+{#							<i class="bi bi-info-circle"></i><span class="align-middle">关于本系统</span>#}
+{#						</a>#}
+{#					</li>#}
+				</ul>
+			</div>
+		</nav>
+
+		<div class="main">
+			<nav class="navbar navbar-expand navbar-light navbar-bg">
+				<a class="sidebar-toggle js-sidebar-toggle">
+					<i class="hamburger align-self-center"></i>
+				</a>
+				<div class="navbar-collapse collapse">
+					<ul class="navbar-nav navbar-align">
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+								<!-- <img src="/static/images/favicon.ico" class="avatar img-fluid rounded me-1"/>  -->
+								<span class="text-dark"> <i class="bi bi-person-circle"></i> 欢迎,
+									{{session.get('username')}}</span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-end">
+
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="/logout">
+									<i class="align-middle me-1" data-feather="log-out"></i>登出</a>
+
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+			<main class="content">
+				<div class="container-fluid p-0">
+					{% with messages = get_flashed_messages(with_categories=true) %}
+					{% if messages %}
+					{% for category, message in messages %}
+					<div class="alert alert-{{ category }}" style="text-align: center;width: 100%; margin-bottom: 5px;">
+						<strong>{{ message }}</strong>
+					</div>
+					{% endfor %}
+					{% endif %}
+					{% endwith %}
+					{% block content %}
+					{% endblock %}
+				</div>
+			</main>
+
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row text-muted">
+						<div class="col-6 text-start">
+							<p class="mb-0">
+								<a class="text-muted" href="#" target="_blank"><strong>教材发放系统</strong></a> 2024&copy; 权限保留
+							</p>
+						</div>
+						<div class="col-6 text-end">
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</div>
+	<script src="/static/js/jquery-3.6.0.min.js"></script>
+	<script src="/static/js/bootstrap.min.js"></script>
+	<script src="/static/js/app.js"></script>
+	{% block script %}
+	{% endblock %}
+</body>
+
+</html>
